@@ -1,11 +1,11 @@
 CC=cc
 NAME=codexion
 CPPFLAGS=-I$(INCLUDE)
-CFLAGS=-Wall -Werror -Wextra -pthread #-g
+CFLAGS=#-Wall -Werror -Wextra -pthread #-g
 INCLUDE=include
 SRC_DIR=src
 OBJ_DIR=obj
-TEST_INPUT = 100 249 60 60 60 90 70 edf
+TEST_INPUT = 11 190 60 60 60 2 70 edf
 
 SRC_RADICAL= main cleanup coder_action key_handler key_handler_utils \
 	thread_handler time utils vars_initializer_1 vars_initializer_2 \

@@ -6,7 +6,7 @@
 /*   By: anzongan <anzongan@student.42belgium.be    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 16:44:28 by anzongan          #+#    #+#             */
-/*   Updated: 2026/06/27 17:26:56 by anzongan         ###   ########.fr       */
+/*   Updated: 2026/07/06 18:33:26 by anzongan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_coder
 	t_shared_vars	*vars;
 	t_args			*args;
 	int64_t			last_compile_start;
+	int64_t			last_compile_end;
 	int				l_key;
 	int				r_key;
 	int				arrival_time;
@@ -88,10 +89,11 @@ void			exec_action(t_action action, t_coder *coder);
 void			burnout_alert(t_coder *coder);
 void			drop_key(t_key_context *ctx);
 void			set_defaults(t_shared_vars *vars);
+void			sleep_and_burnout(t_coder *coder);
 int				sleep_cond(int *rc, t_coder *coder, t_key_context *ctx);
-int				get_first_key(struct timespec ts, \
+int				get_keys_and_compile_step_1(struct timespec ts, \
 t_key_context *ctx_1, t_coder *coder);
-int				get_second_key(struct timespec ts, \
+int				get_keys_and_compile_step_2(struct timespec ts, \
 t_key_context *ctx_1, t_key_context *ctx_2, t_coder *coder);
 int				launcher(t_shared_vars *vars, t_args *args);
 int				joiner(t_shared_vars *vars, t_args *args);

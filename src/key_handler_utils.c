@@ -6,7 +6,7 @@
 /*   By: anzongan <anzongan@student.42belgium.be    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 16:43:27 by anzongan          #+#    #+#             */
-/*   Updated: 2026/06/30 17:58:28 by anzongan         ###   ########.fr       */
+/*   Updated: 2026/07/07 10:52:38 by anzongan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	sleep_cond(int *rc, t_coder *coder, t_key_context *ctx)
 			&& *rc == 0
 			&& ctx->queue->size > 0
 			&& peek(ctx->queue)->id != coder->id
+			&& timestamp_us() - ctx->last_use > coder->args->dongle_cooldown
 		)
 	);
 }

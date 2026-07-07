@@ -6,7 +6,7 @@
 /*   By: anzongan <anzongan@student.42belgium.be    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 16:44:34 by anzongan          #+#    #+#             */
-/*   Updated: 2026/06/27 17:27:02 by anzongan         ###   ########.fr       */
+/*   Updated: 2026/07/06 19:26:33 by anzongan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define INPUT_PARSER_H
 
 # define NUM_PARAMS 8
-# define MAX_NUM_CODER 5000
+# define MAX_NUM_CODER 999
 # include <string.h>
 # include <inttypes.h>
 # include <stdlib.h>

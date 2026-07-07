@@ -6,7 +6,7 @@
 /*   By: anzongan <anzongan@student.42belgium.be    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 16:43:55 by anzongan          #+#    #+#             */
-/*   Updated: 2026/06/30 17:44:04 by anzongan         ###   ########.fr       */
+/*   Updated: 2026/07/02 16:24:00 by anzongan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ args->number_of_compiles_required;
 		vars->coders[i].args = args;
 		vars->coders[i].l_key = i;
 		vars->coders[i].r_key = (i + 1) % args->number_of_coders;
-		vars->coders[i].last_compile_start = timestamp_us();
+		vars->coders[i].last_compile_start = vars->start_time;
+		vars->coders[i].last_compile_end = vars->start_time;
 		i++;
 	}
 	return (0);

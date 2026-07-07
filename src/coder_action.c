@@ -6,17 +6,17 @@
 /*   By: anzongan <anzongan@student.42belgium.be    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 16:42:55 by anzongan          #+#    #+#             */
-/*   Updated: 2026/06/30 18:28:25 by anzongan         ###   ########.fr       */
+/*   Updated: 2026/07/06 19:21:29 by anzongan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-void	sleep_and_die(t_coder *coder)
+void	sleep_and_burnout(t_coder *coder)
 {
 	usleep(
 		max(
-			coder->last_compile_start + coder->args->time_to_burnout
+			coder->last_compile_end + coder->args->time_to_burnout
 			- timestamp_us(),
 			0)
 		);
@@ -27,10 +27,15 @@ static void	sleep_dwait(int64_t sleep_time, t_coder *coder)
 	int				rc;
 	struct timespec	ts;
 
-	pthread_mutex_lock(&(coder->vars->burnout_mutex));
-	if (coder->last_compile_start + coder->args->time_to_burnout
+	if (coder->last_compile_end >= coder->last_compile_start
+		&& coder->last_compile_end + coder->args->time_to_burnout
 		< timestamp_us() + sleep_time)
-		return (sleep_and_die(coder), burnout_alert(coder));
+	{
+		sleep_and_burnout(coder);
+		pthread_mutex_lock(&(coder->vars->burnout_mutex));
+		return (burnout_alert(coder));
+	}
+	pthread_mutex_lock(&(coder->vars->burnout_mutex));
 	ts = get_timeout(timestamp_us() + sleep_time);
 	rc = 0;
 	while (coder->vars->burnout_sig == -1
@@ -45,19 +50,19 @@ static void	sleep_dwait(int64_t sleep_time, t_coder *coder)
 
 static void	coder_sleep(t_action action, t_coder *coder)
 {
-	int64_t	key_last_use;
+	int64_t	tms;
 
-	if (action == COMPILE)
-		sleep_dwait(coder->args->time_to_compile, coder);
-	else if (action == DEBUG)
+	if (action == DEBUG)
 		sleep_dwait(coder->args->time_to_debug, coder);
 	else if (action == REFACTOR)
 		sleep_dwait(coder->args->time_to_refactor, coder);
-	if (action == COMPILE)
+	else if (action == COMPILE)
 	{
-		key_last_use = timestamp_us();
-		coder->vars->keys[coder->l_key].last_use = key_last_use;
-		coder->vars->keys[coder->r_key].last_use = key_last_use;
+		sleep_dwait(coder->args->time_to_compile, coder);
+		tms = timestamp_us();
+		coder->vars->keys[coder->l_key].last_use = tms;
+		coder->vars->keys[coder->r_key].last_use = tms;
+		coder->last_compile_end = tms;
 	}
 }
 
